@@ -1,26 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { Navigate } from "@tanstack/react-router";
+import logoImg from "../assets/logo.png";
+import loadingImg from "../assets/loading.png";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: SplashScreen,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
+function SplashScreen() {
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDone(true), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (done) {
+    return <Navigate to="/login" />;
+  }
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-primary max-w-md mx-auto">
+      <img src={logoImg} alt="Agendei" className="w-32 h-32 mb-8" />
+      <img src={loadingImg} alt="Carregando" className="w-8 h-8 animate-spin-slow opacity-80" />
     </div>
   );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
 }
